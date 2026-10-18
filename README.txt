@@ -16,3 +16,6 @@ AUF DEM IPHONE
 
 APP STORE
 Diese Version ist eine installierbare Web-App (PWA), noch keine native App-Store-App. Für eine Veröffentlichung im App Store braucht es anschließend eine native Hülle bzw. ein iOS-Projekt, Tests und die Erfüllung der jeweils aktuellen Apple-Richtlinien.
+
+
+Neu: Im unteren Block kannst du auf die Kategorien tippen, um eine kurze Regel-Erklärung mit Beispiel zu öffnen.
