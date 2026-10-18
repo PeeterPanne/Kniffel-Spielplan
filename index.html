@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f5b42">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Kniffel">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Kniffel – Spielzettel</title>
+<style>
+:root{--bg:#f4f0e4;--panel:#fffdf6;--ink:#252a24;--muted:#687064;--line:#d8d4c6;--accent:#356b48;--accent2:#e8f0e5;--green:#16835d;--gold:#f5c451}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#294a34,#477653);color:#fff;padding:calc(20px + env(safe-area-inset-top)) 18px 22px}
+.head{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:10px;background:#fff;color:#356b48;display:grid;place-items:center;font-size:28px;font-weight:900;box-shadow:0 5px 16px #0002}h1{font-size:clamp(23px,4vw,32px);margin:0}header p{margin:4px 0 0;color:#d6def1;font-size:14px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:12px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer}.primary{background:var(--accent);color:white}.ghost{background:#ffffff18;color:#fff;border:1px solid #ffffff40}.light{background:#edf0f6;color:#25314a}.danger{background:#fff0f0;color:#a22}
+main{max-width:1200px;margin:20px auto;padding:0 14px 40px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.toolbar label{font-size:13px;color:var(--muted);font-weight:700}.toolbar input{margin-left:8px;width:70px;padding:9px;border:1px solid var(--line);border-radius:9px;font-size:16px}
+.status{font-size:13px;color:var(--muted)}.winner{display:none;background:#fff8df;border:1px solid #f2d57b;border-radius:14px;padding:13px 16px;margin-bottom:14px;font-weight:800}
+.table-wrap{background:var(--panel);border:2px solid #b9c7b2;border-radius:8px;overflow:auto;box-shadow:0 5px 18px #384b3210}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:720px}th,td{padding:8px 9px;border-bottom:1px solid var(--line);border-right:1px solid #edf0f5;text-align:center}th{background:#f0f2e9;position:sticky;top:0;z-index:2;font-size:13px}th:first-child,td:first-child{position:sticky;left:0;z-index:1;text-align:left;background:#fff;min-width:190px;font-weight:700}th:first-child{z-index:3;background:#f0f2e9}.player-name{width:100%;min-width:80px;border:1px solid transparent;background:transparent;border-radius:7px;padding:6px 4px;font-weight:800;text-align:center;color:var(--ink);font-size:14px}.player-name:focus{outline:2px solid #cbd1ff;border-color:var(--accent);background:white}
+.score{width:58px;max-width:100%;border:1px solid #dfe4ee;border-radius:8px;padding:8px 2px;text-align:center;font-size:15px;color:var(--ink);background:#fff}.score:focus{outline:2px solid #b9c2ff;border-color:var(--accent)}.score:disabled{background:#f3f5f9;color:#aab2c0}.category{display:flex;align-items:center;gap:8px}.die{width:25px;height:25px;flex:0 0 25px;border-radius:5px;background:var(--accent2);display:grid;place-items:center;font-size:15px}.section td{background:#dfe9dc!important;color:#294a34;font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:900;padding:8px}.section td:first-child{background:#dfe9dc!important}.bonus-row td{background:#f1faf6}.bonus-row td:first-child{background:#f1faf6}.total-row td{background:#294a34;color:#fff;font-weight:900;font-size:16px}.total-row td:first-child{background:#294a34;color:#fff}.total-row td{border-color:#54715a}.total-row .winner-cell{background:#176c50!important}
+footer{color:var(--muted);font-size:12px;margin:12px 3px;line-height:1.5}.mobile-hint{display:none}
+@media(max-width:600px){header{padding-left:14px;padding-right:14px}.head{align-items:flex-start}.logo{width:42px;height:42px;font-size:24px}.actions{justify-content:flex-end}.actions button{padding:9px 10px;font-size:12px}.toolbar{align-items:flex-start}.mobile-hint{display:block;color:var(--muted);font-size:12px;margin:0 0 9px}main{padding:0 9px 30px;margin-top:13px}th,td{padding:7px 6px}th:first-child,td:first-child{min-width:150px}.score{width:49px;padding:8px 0}.player-name{min-width:65px;font-size:12px}}
+
+@media print{body{background:#fff}header{background:#fff!important;color:#000;padding:10px 0;border-bottom:2px solid #356b48}header p{color:#333}.logo{border:1px solid #356b48;box-shadow:none}.actions,.toolbar .status,.mobile-hint,footer{display:none!important}main{margin:8px auto;padding:0}.table-wrap{overflow:visible;border:1px solid #888;box-shadow:none}table{min-width:0;width:100%;font-size:10px}th,td{padding:4px;border-color:#bbb}th:first-child,td:first-child{position:static;min-width:130px}.score{border:0;border-bottom:1px solid #777;width:42px;padding:2px}.player-name{border:0;color:#000}.section td,.bonus-row td,.total-row td{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head">
+    <div class="brand"><div class="logo">⚄</div><div><h1>Kniffel</h1><p>Dein digitaler Spielzettel · bis zu 8 Spieler</p></div></div>
+    <div class="actions"><button class="ghost" id="printBtn">Drucken</button><button class="ghost" id="shareBtn">Teilen</button><button class="ghost" id="resetBtn">Neues Spiel</button></div>
+  </div>
+</header>
+<main>
+  <div class="toolbar">
+    <label>Spielerzahl <input id="playerCount" type="number" min="1" max="8" value="4"></label>
+    <span class="status" id="saveStatus">Spielstand wird automatisch gespeichert</span>
+  </div>
+  <div class="winner" id="winner"></div>
+  <p class="mobile-hint">Tipp: Wische seitlich, um alle Spieler zu sehen. Tippe auf ein Feld, um Punkte einzutragen.</p>
+  <div class="table-wrap"><table id="scoreTable" aria-label="Kniffel Spielzettel"></table></div>
+  <footer>Wie beim klassischen Kniffel-Spielblock werden alle Punkte direkt eingetragen. Die Summen und der Bonus von 35 Punkten ab 63 Punkten im oberen Block werden automatisch berechnet. Der Spielstand bleibt auf diesem Gerät gespeichert.</footer>
+</main>
+<script>
+const categories = [
+ {type:'section',label:'Oberer Block'},
+ {id:'ones',label:'Einser',icon:'⚀',max:5},{id:'twos',label:'Zweier',icon:'⚁',max:10},{id:'threes',label:'Dreier',icon:'⚂',max:15},{id:'fours',label:'Vierer',icon:'⚃',max:20},{id:'fives',label:'Fünfer',icon:'⚄',max:25},{id:'sixes',label:'Sechser',icon:'⚅',max:30},
+ {id:'upperSubtotal',label:'Summe oben',calc:true},{id:'bonus',label:'Bonus ab 63 Punkten',calc:true,bonus:true},
+ {type:'section',label:'Unterer Block'},
+ {id:'threeKind',label:'Dreierpasch',icon:'🎲',max:30},{id:'fourKind',label:'Viererpasch',icon:'🎲',max:30},{id:'fullHouse',label:'Full House',icon:'🏠',max:25},{id:'smallStraight',label:'Kleine Straße',icon:'↗',max:30},{id:'largeStraight',label:'Große Straße',icon:'⇗',max:40},{id:'kniffel',label:'Kniffel',icon:'★',max:50},{id:'chance',label:'Chance',icon:'🎯',max:30},
+ {id:'lowerSubtotal',label:'Summe unten',calc:true},{id:'total',label:'GESAMTPUNKTE',calc:true,total:true}
+];
+const defaultNames=['Spieler 1','Spieler 2','Spieler 3','Spieler 4','Spieler 5','Spieler 6','Spieler 7','Spieler 8'];
+let state={count:4,names:[...defaultNames],scores:{}};
+const $=id=>document.getElementById(id);
+function load(){try{const s=JSON.parse(localStorage.getItem('kniffel-score-v1'));if(s&&s.names&&s.scores){state={...state,...s};}}catch(e){}}
+function save(){try{localStorage.setItem('kniffel-score-v1',JSON.stringify(state));$('saveStatus').textContent='✓ Automatisch gespeichert';}catch(e){$('saveStatus').textContent='Speichern nicht verfügbar';}}
+function key(cat,p){return cat+'_'+p}
+function value(cat,p){const v=state.scores[key(cat,p)];return v===''||v===undefined||v===null?null:Number(v)}
+function calc(cat,p){if(cat==='upperSubtotal')return ['ones','twos','threes','fours','fives','sixes'].reduce((a,c)=>a+(value(c,p)||0),0);
+if(cat==='bonus')return calc('upperSubtotal',p)>=63?35:0;
+if(cat==='lowerSubtotal')return ['threeKind','fourKind','fullHouse','smallStraight','largeStraight','kniffel','chance'].reduce((a,c)=>a+(value(c,p)||0),0);
+if(cat==='total')return calc('upperSubtotal',p)+calc('bonus',p)+calc('lowerSubtotal',p);
+return null}
+function fmt(n){return n.toLocaleString('de-DE')}
+function render(){
+ $('playerCount').value=state.count;
+ const table=$('scoreTable');table.innerHTML='';
+ const head=document.createElement('tr');head.innerHTML='<th>Kategorie</th>';
+ for(let p=0;p<state.count;p++){const th=document.createElement('th');th.innerHTML=`<input class="player-name" aria-label="Name Spieler ${p+1}" data-name="${p}" value="${esc(state.names[p]||defaultNames[p])}" maxlength="18">`;head.appendChild(th)}
+ table.appendChild(head);
+ for(const c of categories){
+   const tr=document.createElement('tr');
+   if(c.type==='section'){tr.className='section';const td=document.createElement('td');td.colSpan=state.count+1;td.textContent=c.label;tr.appendChild(td);table.appendChild(tr);continue}
+   if(c.bonus)tr.className='bonus-row';if(c.total)tr.className='total-row';
+   const label=document.createElement('td');
+   if(c.calc)label.textContent=c.label;else label.innerHTML=`<div class="category"><span class="die">${c.icon}</span><span>${c.label}</span></div>`;
+   tr.appendChild(label);
+   for(let p=0;p<state.count;p++){
+     const td=document.createElement('td');
+     if(c.calc){td.textContent=fmt(calc(c.id,p));if(c.total)td.dataset.total=p;}
+     else {const input=document.createElement('input');input.className='score';input.type='number';input.inputMode='numeric';input.min='0';input.max=String(c.id==='kniffel'?9999:c.max);input.step='1';input.placeholder='–';input.setAttribute('aria-label',`${state.names[p]} – ${c.label}`);input.dataset.cat=c.id;input.dataset.player=p;const v=value(c.id,p);input.value=v===null?'':v;td.appendChild(input)}
+     tr.appendChild(td);
+   }
+   table.appendChild(tr);
+ }
+ table.querySelectorAll('[data-name]').forEach(el=>el.addEventListener('change',e=>{const p=+e.target.dataset.name;state.names[p]=e.target.value.trim()||defaultNames[p];save();render()}));
+ table.querySelectorAll('[data-cat]').forEach(el=>el.addEventListener('change',e=>{const input=e.target,p=+input.dataset.player,c=input.dataset.cat;let v=input.value===''?'':Math.max(0,Math.floor(Number(input.value)||0));const max=c==='kniffel'?9999:Number(input.max);if(v!==''&&v>max)v=max;state.scores[key(c,p)]=v;save();render();}));
+ showWinner();
+}
+function showWinner(){const w=$('winner');if(!categories.every(c=>c.id?c.calc||Array.from({length:state.count},(_,p)=>value(c.id,p)!==null).some(Boolean):true)){w.style.display='none';return}
+ let best=-1,idx=[];for(let p=0;p<state.count;p++){const total=calc('total',p);if(total>best){best=total;idx=[p]}else if(total===best)idx.push(p)}
+ const allFilled=Array.from({length:state.count},(_,p)=>['ones','twos','threes','fours','fives','sixes','threeKind','fourKind','fullHouse','smallStraight','largeStraight','kniffel','chance'].every(c=>value(c,p)!==null)).every(Boolean);
+ if(allFilled){w.style.display='block';w.textContent='🏆 '+(idx.length>1?'Unentschieden: ':'Gewonnen hat: ')+idx.map(p=>state.names[p]).join(', ')+' · '+fmt(best)+' Punkte';}else{w.style.display='none'}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('playerCount').addEventListener('change',e=>{state.count=Math.min(8,Math.max(1,parseInt(e.target.value)||1));save();render()});
+$('resetBtn').addEventListener('click',()=>{if(confirm('Neues Spiel starten? Alle eingetragenen Punkte werden gelöscht.')){state.scores={};state.names=[...defaultNames];save();render()}});
+$('printBtn').addEventListener('click',()=>window.print());
+$('shareBtn').addEventListener('click',async()=>{const lines=[`Kniffel-Spielzettel`,...Array.from({length:state.count},(_,p)=>`${state.names[p]}: ${calc('total',p)} Punkte`)].join('\n');if(navigator.share){try{await navigator.share({title:'Kniffel-Spielstand',text:lines})}catch(e){}}else{try{await navigator.clipboard.writeText(lines);alert('Spielstand wurde kopiert.')}catch(e){prompt('Spielstand kopieren:',lines)}}});
+load();state.count=Math.min(8,Math.max(1,Number(state.count)||4));state.names=Array.from({length:8},(_,i)=>state.names[i]||defaultNames[i]);render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
